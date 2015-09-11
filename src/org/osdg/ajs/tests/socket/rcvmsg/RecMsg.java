@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutionException;
 public class RecMsg {
 
     public static void main(String[] args){
+
         AjsServer server = new AjsServer(8000);
         server.getFilterChain().addFilter(new Handler());
         try {

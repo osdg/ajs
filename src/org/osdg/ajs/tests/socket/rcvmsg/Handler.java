@@ -18,7 +18,7 @@ public class Handler extends FilterAdapter {
         try {
             String textMsg = new String(data,"UTF-8");
 
-            System.out.println("Receive message : " + textMsg);
+            System.out.println("Receive message : \n" + textMsg);
 
             if (textMsg.trim().equals("quit")){
                 channel.close();
