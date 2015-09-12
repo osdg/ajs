@@ -20,6 +20,10 @@ import org.osdg.ajs.http.HttpRequest;
 import org.osdg.ajs.socket.Channel;
 import org.osdg.ajs.socket.FilterAdapter;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.concurrent.ExecutionException;
+
 /**
  * Created by plter on 9/11/15.
  */
@@ -30,7 +34,20 @@ public class Handler extends FilterAdapter {
 
         HttpRequest request = (HttpRequest) msg;
 
-        System.out.println(request.getContext());
-        super.onReceive(channel, msg);
+//        System.out.println(request.getContext());
+
+        ByteBuffer buffer = ByteBuffer.allocate(2048);
+        buffer.put("HTTP/1.1 200 OK\r\n".getBytes());
+        buffer.put("Content-Type: text/html\r\n".getBytes());
+        buffer.put("\r\n\r\n".getBytes());
+        buffer.put("<html><head><title>Hello AJS</title></head><body><h1>Hello AJS</h1></body></html>".getBytes());
+        buffer.flip();
+
+        try {
+            channel.write(buffer).get();
+            channel.close();
+        } catch (InterruptedException | ExecutionException | IOException e) {
+            e.printStackTrace();
+        }
     }
 }
