@@ -39,7 +39,7 @@ public class Handler extends FilterAdapter {
         ByteBuffer buffer = ByteBuffer.allocate(2048);
         buffer.put("HTTP/1.1 200 OK\r\n".getBytes());
         buffer.put("Content-Type: text/html\r\n".getBytes());
-        buffer.put("\r\n\r\n".getBytes());
+        buffer.put("\r\n".getBytes());
         buffer.put("<html><head><title>Hello AJS</title></head><body><h1>Hello AJS</h1></body></html>".getBytes());
         buffer.flip();
 
