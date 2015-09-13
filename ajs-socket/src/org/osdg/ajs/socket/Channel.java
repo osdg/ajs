@@ -3,6 +3,7 @@ package org.osdg.ajs.socket;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
+import java.nio.channels.CompletionHandler;
 import java.util.concurrent.Future;
 
 /**
@@ -31,6 +32,10 @@ public class Channel {
 
     public Future<Integer> write(ByteBuffer buffer) {
         return getAsynchronousSocketChannel().write(buffer);
+    }
+
+    public <A> void write(ByteBuffer src,A attachment,CompletionHandler<Integer,? super A> handler){
+        getAsynchronousSocketChannel().write(src,attachment,handler);
     }
 
     public void close() throws IOException {

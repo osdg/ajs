@@ -22,6 +22,7 @@ import org.osdg.ajs.socket.FilterAdapter;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.CompletionHandler;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -43,11 +44,20 @@ public class Handler extends FilterAdapter {
         buffer.put("<html><head><title>Hello AJS</title></head><body><h1>Hello AJS</h1></body></html>".getBytes());
         buffer.flip();
 
-        try {
-            channel.write(buffer).get();
-            channel.close();
-        } catch (InterruptedException | ExecutionException | IOException e) {
-            e.printStackTrace();
-        }
+        channel.write(buffer, channel, new CompletionHandler<Integer, Channel>() {
+            @Override
+            public void completed(Integer result, Channel attachment) {
+                try {
+                    attachment.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void failed(Throwable exc, Channel attachment) {
+
+            }
+        });
     }
 }
